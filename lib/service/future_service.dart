@@ -18,9 +18,17 @@ class FutureService extends IFutureService {
 
   final dio = Dio();
   dynamic _getDioRequest(String path) async {
-    final response = await dio.post(
-      "https://opendataapi.gaziantep.bel.tr/api/Environment/GetDeviceList/",
-    );
+    final response = await dio.post(path);
+    switch (response.statusCode) {
+      case HttpStatus.ok:
+        return response.data;
+      default:
+        return ErrorModel(response.toString());
+    }
+  }
+
+  dynamic _getDioRequestByGet(String path) async {
+    final response = await dio.get(path);
     switch (response.statusCode) {
       case HttpStatus.ok:
         return response.data;
@@ -42,6 +50,17 @@ class FutureService extends IFutureService {
   @override
   Future<List<EnvironmentData>> getEnvironmentDataList(String path) async {
     final response = await _getDioRequest(path);
+    if (response is List) {
+      return response.map((e) => EnvironmentData.fromMap(e)).toList();
+    } else {
+      throw response;
+    }
+  }
+
+  @override
+  Future<List<EnvironmentData>> getEnvironmentDataListByDeviceId(
+      String path) async {
+    final response = await _getDioRequestByGet(path);
     if (response is List) {
       return response.map((e) => EnvironmentData.fromMap(e)).toList();
     } else {

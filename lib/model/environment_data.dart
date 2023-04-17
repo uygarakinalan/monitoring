@@ -4,13 +4,6 @@
 
 import 'dart:convert';
 
-List<EnvironmentData> environmentDataFromMap(String str) =>
-    List<EnvironmentData>.from(
-        json.decode(str).map((x) => EnvironmentData.fromMap(x)));
-
-String environmentDataToMap(List<EnvironmentData> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toMap())));
-
 class EnvironmentData {
   EnvironmentData({
     this.istasyonNo,
@@ -18,25 +11,30 @@ class EnvironmentData {
     this.sicaklik,
     this.basinc,
     this.nem,
+    this.gazDirenci,
     this.ppm,
     this.db,
     this.durum,
-    this.gazDirenci,
     this.kaytTarihi,
     this.id,
   });
 
-  String? istasyonNo;
+  int? istasyonNo;
   IstasyonAdi? istasyonAdi;
   String? sicaklik;
   String? basinc;
   String? nem;
+  String? gazDirenci;
   String? ppm;
   String? db;
   String? durum;
-  String? gazDirenci;
   DateTime? kaytTarihi;
   int? id;
+
+  factory EnvironmentData.fromJson(String str) =>
+      EnvironmentData.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
 
   factory EnvironmentData.fromMap(Map<String, dynamic> json) => EnvironmentData(
         istasyonNo: json["istasyonNo"],
@@ -44,10 +42,10 @@ class EnvironmentData {
         sicaklik: json["sicaklik"],
         basinc: json["basinc"],
         nem: json["nem"],
+        gazDirenci: json["gazDirenci"],
         ppm: json["ppm"],
         db: json["db"],
         durum: json["durum"],
-        gazDirenci: json["gazDirenci"],
         kaytTarihi: json["kayıtTarihi"] == null
             ? null
             : DateTime.parse(json["kayıtTarihi"]),
@@ -60,22 +58,18 @@ class EnvironmentData {
         "sicaklik": sicaklik,
         "basinc": basinc,
         "nem": nem,
+        "gazDirenci": gazDirenci,
         "ppm": ppm,
         "db": db,
         "durum": durum,
-        "gazDirenci": gazDirenci,
         "kayıtTarihi": kaytTarihi?.toIso8601String(),
         "id": id,
       };
 }
 
-enum IstasyonAdi { GAZIMUHTAR, STRING, ISTASYON_ADI_GAZIMUHTAR }
+enum IstasyonAdi { GAZIMUHTAR }
 
-final istasyonAdiValues = EnumValues({
-  "gazimuhtar": IstasyonAdi.GAZIMUHTAR,
-  "Gazimuhtar": IstasyonAdi.ISTASYON_ADI_GAZIMUHTAR,
-  "string": IstasyonAdi.STRING
-});
+final istasyonAdiValues = EnumValues({"Gazimuhtar": IstasyonAdi.GAZIMUHTAR});
 
 class EnumValues<T> {
   Map<String, T> map;

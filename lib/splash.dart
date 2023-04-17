@@ -16,12 +16,12 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     Timer(
-        Duration(seconds: 5),
+        Duration(seconds: 3),
         () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (BuildContext context) => MapPage())));
     return Container(
       child: Lottie.network(
-          'ttps://assets4.lottiefiles.com/private_files/lf30_jmgekfqg.jsonh'),
+          'https://assets4.lottiefiles.com/private_files/lf30_jmgekfqg.json'),
     );
   }
 }
